@@ -21,7 +21,7 @@ class Game:
 
         return cards[ind], ind
     
-     #Code for player to shuffle and discard hand
+    #Code for player to shuffle and discard hand
     def newHand(self):
         newHand = []
         self.playerDeck.shuffle()
@@ -36,6 +36,7 @@ class Game:
         newHand.append(card(0, suits.S, 0))
         return newHand
     
+    #Weightings for the randomly generated events, both the amount and the type.
     def generateOptions(self):
         choices = random.choices([1, 2, 3], [0.35, 0.4, 0.25])[0]
         realOptions = []
@@ -87,14 +88,16 @@ class Game:
         
         self.mainTutorial(playerHand, opponentHand, opponentDeck)
 
+    #Tutorial Game
     def mainTutorial(self, pHand, oHand, oDeck):
         oppHealth = 10
         
-
+        #Health Check
         time.sleep(1)
         print("The turn will begin with your health shown, and your hand being drawn, like below:")
         print("Health: ", self.health, '/', self.healthMax, sep='')
 
+        #Print Hand
         for x in range(0, len(pHand)):
             print(pHand[x].getGameCard(), end=' ')
 
@@ -106,6 +109,7 @@ class Game:
         print("Now you just need to select your card! Simply put down a number from 1 to 5. If you don't like any card simply type 'S' to shuffle and redraw 4 cards. Bewarned that this gives your opponent a free shot.")
         print("Note: We are playing with Ace as low.")
         
+        #Ask what card to play, only accept valid answer
         while True:
             decision = input('')
             if(decision != 'S'):
@@ -124,7 +128,7 @@ class Game:
 
         time.sleep(1)
         
-
+        #get Opponent's card and see who won.
         opChoice, indic = self.pickCard(oHand)
         print('They selected:', opChoice.getGameCard())
 
@@ -141,7 +145,7 @@ class Game:
         print("That ends the tutorial, there may be more features to discover, but if you'd like to replay this, enter 1. If not 2 will let you start the game!")
         a = input("")
         
-
+        #End tutorial
         if(str(a)== "1"):
             self.tutorialGame()
         else:
@@ -153,10 +157,12 @@ class Game:
 
         print("You have drawn three cards! Which one would you like to burn in the fire raging in front of you?")
         
+        #Draw three from deck
         for x in range(0, 3):
             playerHand.append(self.playerDeck.drawCard())
             print(playerHand[x].getGameCard(), end=' ')
         
+        #Remove card from deck
         print("")
         while True:
             y = input("Select the card to burn! ")
@@ -166,6 +172,7 @@ class Game:
             except (ValueError, IndexError):
                 print("Please try again")
 
+        #Heal
         print("What a pretty fire, the heat slowly brings feeling back to your cold face.")
         self.health = self.health + playerHand[int(y)-1].number
         if(self.health > self.healthMax):
@@ -178,21 +185,27 @@ class Game:
 
         self.mainGameStart()
 
+    #Loss function
     def lose(self):
         print("You lost! Thanks for trying! - Trev")
 
+    #Main loop for a fight
     def fightLoop(self, pHand, oDeck, oHand, oHealth):
+        #Draw
         pHand.append(self.playerDeck.drawCard())
         oHand.append(oDeck.drawCard())
 
+        #Health Check
         print("Your health: ", self.health, '/', self.healthMax, sep='')
         print("Opponent health: ", oHealth, sep='')
 
+        #Print Cartds
         for x in range(0, len(pHand)):
             print(pHand[x].getGameCard(), end=' ')
 
         print("")
 
+        #Ask for card choice
         while True:
             decision = input('')
             if(decision not in ('S', 's')):
@@ -209,7 +222,8 @@ class Game:
                 uChoice = pHand[-1]
                 pHand.pop(-1)
                 break
-
+        
+        #Get opponent's card choice and see who won
         opChoice, indic = self.pickCard(oHand)
         print('They selected:', opChoice.getGameCard())
         print('')
@@ -232,6 +246,7 @@ class Game:
             print("You won! You can now steal a card from cards that your opponent dropped as the legged it!")
             toChoose = []
 
+            #Steal card
             for x in range(0, 3):
                 toChoose.append(oDeck.drawCard())
                 print(toChoose[x].getGameCard(), end=' ')
@@ -246,6 +261,7 @@ class Game:
         else:
             self.fightLoop(pHand, oDeck, oHand, oHealth)
 
+    #Fight setup of variables
     def fightSetup(self): 
         opponentDeck = deck(self.Jokers)
         playerHand = []
@@ -259,7 +275,8 @@ class Game:
             opponentHand.append(opponentDeck.drawCard())
 
         self.fightLoop(playerHand, opponentDeck, opponentHand, opponentHealth)
-        
+    
+    #Main game story loop
     def mainGameStart(self):
         options = self.generateOptions()
         print("You continue along the endless road.")

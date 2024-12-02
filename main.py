@@ -2,6 +2,7 @@ from gameSegments import *
 
 Jokers = False
 
+#Function that deals with options, mostly so Jokers can be added
 def setOptions():
     global Jokers
     print("Select which option to change!")
@@ -21,6 +22,7 @@ def setOptions():
     else:
         start()
 
+#Main menu
 def start():
     global Jokers
     print("Welcome to Higher!")

@@ -1,6 +1,7 @@
 from enum import IntEnum, Enum
 import random
 
+#Enum that has all the suits
 class suits(Enum):
     S = 'Spades'
     C = 'Clubs'
@@ -8,6 +9,7 @@ class suits(Enum):
     D = 'Diamonds'
     J = 'Jokers'
 
+#Enum of all card values
 class cardValues(IntEnum):
     Null = 0
     Ace = 1
@@ -25,6 +27,7 @@ class cardValues(IntEnum):
     King = 13
     Joker = 14
 
+#Card object with equality and less than overloads to allow for comparison
 class card:
     def __init__(self, number, suit, pos):
         self.number = number
@@ -59,6 +62,7 @@ class card:
             else:
                 return False
     
+    #Aesthetic code for printing of cards in form [10A]
     def simplify(self, card):
         if(card < 11 and card > 1):
             return card
@@ -72,18 +76,22 @@ class card:
             return 'K'
         elif(card == 14):
             return 'X'
-        
+    
+    #Prints card's value in the [10A] format
     def getGameCard(self):
         return '[' + str(self.simplify(self.number.value)) + self.suit.name + ']'
     
+    #updates position for sorting
     def updatePosition(self, newPos):
         self.position = newPos
 
+#Deck object
 class deck:
     cards = []
     decksize = 52
     cardOrder = []
 
+    #Create a standard deck
     def __init__(self, joker):
         if(joker == 1):
             self.decksize = 54
@@ -104,17 +112,21 @@ class deck:
         
         self.shuffle()
 
+    #Print's entire deck
     def printDeck(self):
         for x in range(0, self.decksize):
             print(self.cards[x].getGameCard(), end=' ')
     
+    #prints card in word form
     def printCard(self, position):
         print(self.cards[position].number, 'of', self.cards[position].suit.value)
 
+    #Shuffles list that contains the draw order. List of cards remain in normal order and are called in reference to draw list to save time.
     def shuffle(self):
         self.cardOrder = [x for x in range(self.decksize)]
         random.shuffle(self.cardOrder)
 
+    #Draw card and remove from deck
     def drawCard(self):
         if(len(self.cardOrder) < 1):
             self.shuffle()
@@ -122,6 +134,7 @@ class deck:
         del self.cardOrder[0]
         return cardDrawn
 
+    #Add card to deck and ensure all is sorted
     def addCard(self, newCard):
         added = False
         self.decksize = self.decksize + 1
@@ -139,7 +152,8 @@ class deck:
                 newDeck.append(card(self.cards[x].number, self.cards[x].suit, x))
 
         self.cards = newDeck
-                
+
+    #Remove card from deck     
     def removeCard(self, newCard):
         self.decksize = self.decksize - 1
         self.shuffle()
