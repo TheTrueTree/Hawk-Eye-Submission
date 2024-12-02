@@ -24,7 +24,8 @@ Gameplay:
 
 Improvements:
 	- The game is essentially a proof of concept. It is unbalanced (A standard deck means that on playtesting, it can become very hard), and the story is not fleshed out. However, these both could take more time. Other features I
-	considerted was to implement an in game cheat mechanic, where you could insert cards into your opponents deck. Essentially leaning more into the RPG side of things
+	considerted was to implement an in game cheat mechanic, where you could insert cards into your opponents deck. Essentially leaning more into the RPG side of things.
+	Also there is technically no way to win currently as I didn't want it to be a cop-out, so consider it an endless rougelikeish game!
 
 Conclusions:
 Overall, was good fun! Thank you, and do let me know any critiques you've got.
